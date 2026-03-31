@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "email": "prof.benali@school.dz",
+      "password": "Pass1234",
+      "name": "Prof Benali",
+      "role": "teacher"
+    },
+    {
+      "email": "prof.kaci@school.dz",
+      "password": "Pass1234",
+      "name": "Prof Kaci",
+      "role": "teacher"
+    },
+    {
+      "email": "etudiant.ilyas@school.dz",
+      "password": "Pass1234",
+      "name": "Ilyas Mesbah",
+      "role": "student"
+    },
+    {
+      "email": "etudiant.amina@school.dz",
+      "password": "Pass1234",
+      "name": "Amina Bouzid",
+      "role": "student"
+    },
+    {
+      "email": "etudiant.yacine@school.dz",
+      "password": "Pass1234",
+      "name": "Yacine Hamdani",
+      "role": "student"
+    }
+  ]
+}
