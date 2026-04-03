@@ -4,6 +4,7 @@ import '../core/constants.dart';
 import '../services/auth_service.dart';
 import 'student_home_page.dart';
 import 'teacher_home_page.dart';
+import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -218,6 +219,22 @@ class _LoginPageState extends State<LoginPage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const RegisterPage()),
+                          );
+                        },
+                        child: Text(
+                          'Pas encore de compte ? S\'inscrire',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],

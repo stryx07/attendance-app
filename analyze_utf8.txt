@@ -1,0 +1,9 @@
+﻿Analyzing version1...                                           
+
+  error - The named parameter 'user' is required, but there's no corresponding argument - lib\pages\auth_gate.dart:44:32 - missing_required_argument
+  error - The named parameter 'user' is required, but there's no corresponding argument - lib\pages\auth_gate.dart:47:32 - missing_required_argument
+warning - Unused import: '../services/auth_service.dart' - lib\pages\student_home_page.dart:4:8 - unused_import
+warning - Unused import: 'login_page.dart' - lib\pages\student_home_page.dart:5:8 - unused_import
+warning - Unused import: '../services/auth_service.dart' - lib\pages\teacher_home_page.dart:6:8 - unused_import
+warning - Unused import: 'login_page.dart' - lib\pages\teacher_home_page.dart:7:8 - unused_import
+

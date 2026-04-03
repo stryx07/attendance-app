@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'dart:convert';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
 import 'login_page.dart';
 import 'teacher_attendance_page.dart';
+import 'profile_page.dart';
+import 'teacher_dashboard_page.dart';
 
 class TeacherHomePage extends StatefulWidget {
   final UserModel user;
@@ -17,6 +20,7 @@ class TeacherHomePage extends StatefulWidget {
 class _TeacherHomePageState extends State<TeacherHomePage> {
   final _subjectController = TextEditingController();
   String? _generatedSubject;
+  String? _qrJsonData;
 
   @override
   void dispose() {
@@ -36,7 +40,18 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       );
       return;
     }
-    setState(() => _generatedSubject = subject);
+    
+    // Génération du JSON
+    final Map<String, dynamic> qrData = {
+      "subject": subject,
+      "teacherId": widget.user.uid,
+      "date": DateTime.now().toIso8601String().split('T').first,
+    };
+    
+    setState(() {
+      _generatedSubject = subject;
+      _qrJsonData = jsonEncode(qrData);
+    });
   }
 
   @override
@@ -53,16 +68,13 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout_rounded),
-            tooltip: 'Se déconnecter',
-            onPressed: () async {
-              await AuthService().logout();
-              if (context.mounted) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginPage()),
-                );
-              }
+            icon: const Icon(Icons.person_rounded),
+            tooltip: 'Mon Profil',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ProfilePage(user: widget.user)),
+              );
             },
           )
         ],
@@ -145,7 +157,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: QrImageView(
-                    data: _generatedSubject!,
+                    data: _qrJsonData!,
                     version: QrVersions.auto,
                     size: 220,
                   ),
@@ -199,6 +211,22 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
             ],
             const SizedBox(height: 32),
           ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => TeacherDashboardPage(teacher: widget.user),
+            ),
+          );
+        },
+        backgroundColor: const Color(0xFF7C4DFF),
+        icon: const Icon(Icons.dashboard_rounded, color: Colors.white),
+        label: Text(
+          'Dashboard',
+          style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w600),
         ),
       ),
     );

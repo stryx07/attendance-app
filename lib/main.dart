@@ -4,11 +4,14 @@ import 'package:provider/provider.dart';
 import 'core/theme.dart';
 import 'services/auth_service.dart';
 import 'services/firestore_service.dart';
-import 'pages/login_page.dart';
+import 'firebase_options.dart';
+import 'pages/auth_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     MultiProvider(
@@ -30,7 +33,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Attendance System',
       theme: AppTheme.lightTheme,
-      home: const LoginPage(),
+      home: const AuthGate(),
     );
   }
 }

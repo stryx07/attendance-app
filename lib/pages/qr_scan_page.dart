@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
@@ -43,14 +44,42 @@ class _QrScanPageState extends State<QrScanPage> {
       return;
     }
 
-    // On suppose que le contenu du QR est le subjectID.
-    final String subjectId = code;
+    String subjectId = '';
+    String teacherId = '';
+    
+    try {
+      final decoded = jsonDecode(code);
+      if (decoded is Map<String, dynamic> && decoded.containsKey('subject') && decoded.containsKey('teacherId')) {
+        subjectId = decoded['subject'];
+        teacherId = decoded['teacherId'];
+        
+        final date = decoded['date'];
+        final today = DateTime.now().toIso8601String().split('T').first;
+        if (date != today) {
+          _showError('Ce QR Code n\'est plus valide (date expirée).');
+          setState(() => _isScanning = true);
+          return;
+        }
+      } else {
+        throw const FormatException('QR non valide');
+      }
+    } catch (e) {
+      _showError('Format du QR Code non valide.');
+      setState(() => _isScanning = true);
+      return;
+    }
 
     try {
+      // Récupération du profil pour avoir le nom de l'étudiant
+      final userProfile = await authService.getUserRole(user.uid);
+      final studentName = userProfile?.name ?? 'Inconnu';
+
       final success = await firestoreService.markAttendance(
         subjectId: subjectId,
+        teacherId: teacherId,
         studentId: user.uid,
         studentEmail: user.email ?? 'non-specifié',
+        studentName: studentName,
       );
 
       if (!mounted) return;

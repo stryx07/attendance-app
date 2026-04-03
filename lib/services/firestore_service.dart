@@ -30,8 +30,10 @@ class FirestoreService extends ChangeNotifier {
   /// Returns `true` if attendance was saved, `false` if already recorded.
   Future<bool> markAttendance({
     required String subjectId,
+    required String teacherId,
     required String studentId,
     required String studentEmail,
+    required String studentName,
   }) async {
     try {
       // Stratégie anti-doublon: subjectId_studentId_YYYYMMDD
@@ -47,8 +49,10 @@ class FirestoreService extends ChangeNotifier {
 
       await _db.collection('attendance').doc(docId).set({
         'subjectId': subjectId,
+        'teacherId': teacherId,
         'studentId': studentId,
         'studentEmail': studentEmail,
+        'studentName': studentName,
         'timestamp': FieldValue.serverTimestamp(),
       });
       return true; // Nouvelle présence enregistrée

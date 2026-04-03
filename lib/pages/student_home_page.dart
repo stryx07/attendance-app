@@ -5,6 +5,9 @@ import '../services/auth_service.dart';
 import 'login_page.dart';
 import 'qr_scan_page.dart';
 
+import 'profile_page.dart';
+import 'student_history_page.dart';
+
 class StudentHomePage extends StatelessWidget {
   final UserModel user;
   const StudentHomePage({super.key, required this.user});
@@ -23,16 +26,13 @@ class StudentHomePage extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout_rounded),
-            tooltip: 'Se déconnecter',
-            onPressed: () async {
-              await AuthService().logout();
-              if (context.mounted) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginPage()),
-                );
-              }
+            icon: const Icon(Icons.person_rounded),
+            tooltip: 'Mon Profil',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ProfilePage(user: user)),
+              );
             },
           )
         ],
@@ -78,7 +78,10 @@ class StudentHomePage extends StatelessWidget {
               subtitle: 'Voir mes présences enregistrées',
               color: const Color(0xFF00BCD4),
               onTap: () {
-                // TODO: Navigation vers l'historique
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => StudentHistoryPage(user: user)),
+                );
               },
             ),
           ],
